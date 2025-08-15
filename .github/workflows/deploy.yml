@@ -3,30 +3,37 @@ name: Deploy Flutter Web to GitHub Pages
 on:
  push:
    branches:
-     - main
+     - main  # Déploie à chaque push sur main
 
 jobs:
  build:
    runs-on: ubuntu-latest
 
    steps:
+     # 1. Récupération du code
      - name: Checkout repository
        uses: actions/checkout@v3
 
+     # 2. Installation de Flutter
      - name: Set up Flutter
        uses: subosito/flutter-action@v2
        with:
-         flutter-version: '3.24.0' # tu peux ajuster si besoin
+         flutter-version: '3.22.0'  # Mets la version de Flutter que tu utilises
          channel: 'stable'
 
+     # 3. Installation des dépendances
      - name: Install dependencies
-       run: flutter pub get
-       working-directory: tower_rpg_flutter
+       run: |
+         cd tower_rpg_flutter
+         flutter pub get
 
+     # 4. Build Flutter Web
      - name: Build web
-       run: flutter build web --release
-       working-directory: tower_rpg_flutter
+       run: |
+         cd tower_rpg_flutter
+         flutter build web --release
 
+     # 5. Déploiement sur GitHub Pages
      - name: Deploy to GitHub Pages
        uses: peaceiris/actions-gh-pages@v3
        with:
