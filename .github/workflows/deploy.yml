@@ -11,21 +11,24 @@ jobs:
 
    steps:
      - name: Checkout repository
-       uses: actions/checkout@v4
+       uses: actions/checkout@v3
 
-     - name: Install Flutter
+     - name: Set up Flutter
        uses: subosito/flutter-action@v2
        with:
-         flutter-version: '3.22.0'
+         flutter-version: '3.24.0' # tu peux ajuster si besoin
+         channel: 'stable'
 
-     - name: Get dependencies
+     - name: Install dependencies
        run: flutter pub get
+       working-directory: tower_rpg_flutter
 
-     - name: Build Web
+     - name: Build web
        run: flutter build web --release
+       working-directory: tower_rpg_flutter
 
      - name: Deploy to GitHub Pages
        uses: peaceiris/actions-gh-pages@v3
        with:
          github_token: ${{ secrets.GITHUB_TOKEN }}
-         publish_dir: build/web
+         publish_dir: tower_rpg_flutter/build/web
